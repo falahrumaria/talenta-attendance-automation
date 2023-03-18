@@ -89,6 +89,11 @@ const main = async () => {
     console.log("Successfully Logged in...");
   }
 
+  // get phpsessid from cookies
+  const cookies = await context.cookies("https://hr.talenta.co");
+  typeof cookies;
+  console.log(cookies.find(e => e["name"] === "PHPSESSID"));
+
   const myName = (await page.locator("#navbar-name").textContent()).trim();
   const whoIsOffToday = await page
     .locator(".tl-card-small", { hasText: `Who's Off` })
@@ -127,15 +132,15 @@ const main = async () => {
 
   const shouldSkipCheckInOut = isTodayHoliday || isTodayOnLeave;
 
-  if (shouldSkipCheckInOut) {
-    const consoleText = isTodayOnLeave
-      ? "You are on leave (cuti) today, skipping check in/out..."
-      : "You are on holiday today, skipping check in/out...";
-    console.log(consoleText);
+  // if (shouldSkipCheckInOut) {
+  //   const consoleText = isTodayOnLeave
+  //     ? "You are on leave (cuti) today, skipping check in/out..."
+  //     : "You are on holiday today, skipping check in/out...";
+  //   console.log(consoleText);
 
-    await browser.close();
-    return;
-  }
+  //   await browser.close();
+  //   return;
+  // }
 
   await Promise.all([
     page.goto("https://hr.talenta.co/live-attendance"),
@@ -182,3 +187,4 @@ const main = async () => {
 };
 
 main();
+
